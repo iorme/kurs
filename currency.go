@@ -7,6 +7,6 @@ type Currency struct{
 }
 
 type Data struct{
-	LastUpdated string
-	Currency map[string]Currency
+	LastUpdated string `json:lastupdated`
+	Currency map[string]Currency `json:currency`
 }
