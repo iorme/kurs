@@ -39,7 +39,10 @@ func processMandiri() Data{
 					kursjual = teks
 				}
 				t += 1
-				kurs[matauang] = Currency{Nilai:nilai,KursJual:kursjual,KursBeli:kursbeli}
+ 
+				if kursjual != "" && kursbeli != "" {
+					kurs[matauang] = Currency{Nilai:nilai,KursJual:kursjual,KursBeli:kursbeli}
+				}
 			}
 		}
 	}
