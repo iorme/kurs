@@ -11,7 +11,7 @@ func processMandiri() Data{
 	document := processUrl(url)
 	defer document.Free();
 
-	lastUpdated := getLastUpdated(document)
+	lastUpdated := getLastUpdatedMandiri(document)
 
 	data,_ := parseMandiriHtml(document)
 
@@ -23,7 +23,7 @@ func processMandiri() Data{
 	return response
 }
 
-func getLastUpdated(document *html.HtmlDocument) string {
+func getLastUpdatedMandiri(document *html.HtmlDocument) string {
 	str, _ := document.Search("//p[@class='catatan']");
 	firstData := strings.Split(strings.Split(str[0].InnerHtml(), "<br>")[0], " ")
 	lastUpdated := firstData[2] + " " + firstData[3] + " " + firstData[4] + " " + firstData[5] + " " + firstData[6]
