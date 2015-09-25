@@ -1,22 +1,13 @@
 package kurs
 
 import(
-	"net/http"
-	"io/ioutil"
 	"strings"
-	"github.com/moovweb/gokogiri"
 )
 
 func processBI() Data{
 	url := "http://www.bi.go.id/id/moneter/informasi-kurs/transaksi-bi/Default.aspx"
 	
-	respon, err := http.Get(url)
-	if err != nil {
-		panic(err)
-	}
-
-	page, _ := ioutil.ReadAll(respon.Body)
-	document, _ := gokogiri.ParseHtml(page)
+	document := processUrl(url)
 	defer document.Free();
 
 	var matauang string
