@@ -6,12 +6,12 @@ import (
 	"encoding/json"
 	)
 
-func TestParse(t *testing.T) {
+func TestParseMandiri(t *testing.T) {
 	url := "http://www.bankmandiri.co.id/resource/kurs.asp?row=2"
 	
 	doc := processUrl(url)
 
-	str := getLastUpdated(doc)
+	str := getLastUpdatedMandiri(doc)
 	if str == "" {
 		t.Error("error get last updated date : ")
 		return
