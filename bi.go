@@ -1,24 +1,36 @@
 package kurs
 
 import(
-	"net/http"
-	"io/ioutil"
 	"strings"
-	"github.com/moovweb/gokogiri"
+	"github.com/moovweb/gokogiri/html"
 )
 
 func processBI() Data{
 	url := "http://www.bi.go.id/id/moneter/informasi-kurs/transaksi-bi/Default.aspx"
 	
-	respon, err := http.Get(url)
-	if err != nil {
-		panic(err)
-	}
-
-	page, _ := ioutil.ReadAll(respon.Body)
-	document, _ := gokogiri.ParseHtml(page)
+	document := processUrl(url)
 	defer document.Free();
 
+	lastUpdated := getLastUpdatedBi(document)
+
+ 	data,_ := parseBiHtml(document)
+
+	response := Data{
+		LastUpdated: lastUpdated,
+		Currency: data,
+	}
+
+	return response
+}
+
+func getLastUpdatedBi(document *html.HtmlDocument) string {
+	span, _ := document.Search("//span[@id='ctl00_PlaceHolderMain_biWebKursTransaksiBI_lblUpdate']")
+	lastUpdated := span[0].InnerHtml()
+
+	return lastUpdated
+}
+
+func parseBiHtml(document *html.HtmlDocument) (map[string]Currency, error) {
 	var matauang string
 	var nilai string
 	var kursjual string
@@ -26,10 +38,7 @@ func processBI() Data{
 	
 	kurs := make(map[string]Currency)
 
-	span, _ := document.Search("//span[@id='ctl00_PlaceHolderMain_biWebKursTransaksiBI_lblUpdate']")
-	lastUpdated := span[0].InnerHtml()
-
- 	doc, _ := document.Search("//table[@id='ctl00_PlaceHolderMain_biWebKursTransaksiBI_GridView1']/tr")
+	doc, err := document.Search("//table[@id='ctl00_PlaceHolderMain_biWebKursTransaksiBI_GridView1']/tr")
 	for i, tr := range doc{
 		t := 0
 		for td := tr.FirstChild(); td != nil; td = td.NextSibling(){
@@ -50,10 +59,5 @@ func processBI() Data{
 		}
 	}
 
-	response := Data{
-		LastUpdated:lastUpdated,
-		Currency:kurs,
-	}
-
-	return response
+	return kurs, err
 }

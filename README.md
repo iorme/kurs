@@ -1,13 +1,12 @@
-### kurs
-dibuat dalam rangka belajar membuat package golang
+### Kurs
+Dibuat dalam rangka belajar membuat package golang
 
-### keterangan
+### Keterangan
 Package untuk mendapatkan data kurs mata uang bank di indonesia sementara ini hanya mendukung bank indonesia ("bi") dan bank mandiri ("mandiri")
 
+### Contoh penggunaan
 
-### contoh penggunaan
-
-```
+```golang
 package main
 
 import (
